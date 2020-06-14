@@ -33,9 +33,9 @@ export default {
         }  
     },
     //metoda koja provjerava postoji li korisnik u bazi
-    async authenticateUser(mail, password) {
+    async authenticateUser(username, password) {
         let db = await connect();
-        let user = await db.collection("users").findOne({ mail: mail });
+        let user = await db.collection("users").findOne({ username: username });
 
         if (user && user.password && (await bcrypt.compare(password, user.password))) {
             delete user.password;
@@ -45,7 +45,7 @@ export default {
             });
             return {
                 token,
-                mail: user.mail,
+                username: user.username,
             };
         } 
         else {
